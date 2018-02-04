@@ -1,5 +1,5 @@
 
-# request-log
+# request-logs
 
 **[request-compose]** logger:
 
