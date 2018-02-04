@@ -1,5 +1,5 @@
 {
-  "name": "request-log",
+  "name": "request-logs",
   "version": "0.0.1",
   "description": "HTTP debug log for request-compose",
   "keywords": [
@@ -10,11 +10,11 @@
     "log"
   ],
   "license": "Apache-2.0",
-  "homepage": "https://github.com/simov/request-log",
+  "homepage": "https://github.com/simov/request-logs",
   "author": "Simeon Velichkov <simeonvelichkov@gmail.com> (https://simov.github.io)",
   "repository": {
     "type": "git",
-    "url": "https://github.com/simov/request-log.git"
+    "url": "https://github.com/simov/request-logs.git"
   },
   "dependencies": {
     "chalk": "^1.1.1",
