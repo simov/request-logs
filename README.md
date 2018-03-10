@@ -4,7 +4,7 @@
 **[request-compose]** logger:
 
 ```bash
-$ DEBUG=req,res,body,json node app.js
+$ DEBUG=req,res,body,json,nocolor node app.js
 ```
 
 ## req
@@ -48,6 +48,10 @@ Prints out the parsed response body as JSON:
 json
     hey: hi
 ```
+
+## nocolor
+
+Disable all colors
 
 
   [request-compose]: https://github.com/simov/request-compose

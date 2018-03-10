@@ -25,18 +25,20 @@
     "babel-preset-env": "^1.6.1"
   },
   "bin": {},
-  "main": "./index.js",
+  "main": "./build/index.js",
   "files": [
     "build/",
     "index.js",
+    "logs.js",
     "LICENSE",
     "README.md",
     "package.json"
   ],
   "scripts": {
     "build:logs": "npx babel logs.js --out-file build/logs.js",
-    "build": "rm -rf build/ && mkdir -p build && npm run build:logs",
-    "prepublishOnly": "npm run build"
+    "build:index": "npx babel index.js --out-file build/index.js",
+    "build": "rm -rf build/ && mkdir -p build && npm run build:logs && npm run build:index",
+    "prepublish": "npm run build"
   },
   "engines": {
     "node": ">=4.0.0"

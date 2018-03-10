@@ -2,6 +2,7 @@
 var c = require('chalk')
 var j = require('prettyjson')
 
+
 // req, res, body, json
 var debug = process.env.DEBUG.split(',')
   .reduce((debug, key) => (debug[key] = true, debug), {})
@@ -34,7 +35,11 @@ var status = (code) =>
 
 
 var prettyjson = (obj) =>
-  j.render(obj, {keysColor: 'blue', stringColor: 'grey'}, 4)
+  j.render(
+    obj,
+    debug.nocolor ? {noColor: true} : {keysColor: 'blue', stringColor: 'grey'},
+    4
+  )
 
 
 var request = ({req, body, options}) => {
@@ -88,6 +93,9 @@ module.exports = ({req, res, options, body, json}) => {
 
   if (!Object.keys(debug).length) {
     return
+  }
+  if (debug.nocolor) {
+    c.enabled = false
   }
 
   if (debug.req && req) {

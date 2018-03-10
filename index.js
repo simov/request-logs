@@ -1,6 +1,6 @@
 
-module.exports = (function () {
-  return process.env.SOURCE
-    ? require('./logs')
-    : require('./build/logs')
-})()
+module.exports = (() =>
+  process.env.SOURCE
+    ? require('../logs')
+    : require('./logs')
+)()
