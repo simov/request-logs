@@ -1,6 +1,6 @@
 {
   "name": "request-logs",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "HTTP debug logs for request-compose",
   "keywords": [
     "request",
