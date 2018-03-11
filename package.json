@@ -35,7 +35,7 @@
     "package.json"
   ],
   "scripts": {
-    "build:main": "npx babel *.js --out-dir build",
+    "build:main": "babel *.js --out-dir build",
     "build": "rm -rf build/ && mkdir -p build && npm run build:main",
     "prepublish": "npm run build"
   },
