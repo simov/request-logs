@@ -1,4 +1,5 @@
 
+var qs = require('querystring')
 var c = require('chalk')
 var j = require('prettyjson')
 
@@ -57,9 +58,22 @@ var request = ({req, body, options}) => {
     ), {})
   ))
   // body
-  if (debug.body) {
+  if (debug.body && body) {
     console.log(c.gray.inverse('body'))
     console.log(body)
+  }
+  // json or querystring
+  if (debug.json && body) {
+    var header = Object.keys(options.headers)
+      .find((name) => name.toLowerCase() === 'content-type')
+    if (/application\/json/.test(options.headers[header])) {
+      console.log(c.gray.inverse('json'))
+      console.log(prettyjson(JSON.parse(body)))
+    }
+    else if (/application\/x-www-form-urlencoded/.test(options.headers[header])) {
+      console.log(c.gray.inverse('form'))
+      console.log(prettyjson(qs.parse(body)))
+    }
   }
 }
 
