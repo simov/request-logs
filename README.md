@@ -1,10 +1,10 @@
 
 # request-logs
 
-**[request-compose]** logger:
+> _HTTP debug logs for **[request-compose]**_
 
 ```bash
-$ DEBUG=req,res,body,json,nocolor node app.js
+$ DEBUG=req,res,json node app.js
 ```
 
 ## req
@@ -33,7 +33,7 @@ res 200 OK
 
 ## body
 
-Prints out the raw request and response bodies:
+Prints out the raw request and response body:
 
 ```
 body
@@ -42,7 +42,7 @@ body
 
 ## json
 
-Prints out the parsed response body as JSON:
+Prints out the parsed request and response body:
 
 ```
 json
@@ -52,6 +52,10 @@ json
 ## nocolor
 
 Disable all colors
+
+## bright
+
+Bright color scheme
 
 
   [request-compose]: https://github.com/simov/request-compose
