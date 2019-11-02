@@ -110,7 +110,7 @@ var response = ({res, body, json}) => {
     console.log(header('body'))
     console.log(body)
   }
-  // json
+  // json or querystring
   if (json) {
     console.log(header('json'))
     console.log(content(json))
