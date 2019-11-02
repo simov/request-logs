@@ -1,6 +1,6 @@
 
 var qs = require('querystring')
-var c = require('chalk')
+var c = require('colors/safe')
 var j = require('prettyjson')
 
 

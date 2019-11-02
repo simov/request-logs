@@ -17,8 +17,8 @@
     "url": "https://github.com/simov/request-logs.git"
   },
   "dependencies": {
-    "chalk": "^1.1.1",
-    "prettyjson": "^1.1.3"
+    "colors": "^1.4.0",
+    "prettyjson": "^1.2.1"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
