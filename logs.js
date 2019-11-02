@@ -4,37 +4,41 @@ var c = require('colors/safe')
 var j = require('prettyjson')
 
 
-// req, res, body, json
+var keys = ['req', 'res', 'body', 'json', 'nocolor', 'bright']
+
 var debug = process.env.DEBUG.split(',')
+  .filter((key) => keys.includes(key))
   .reduce((debug, key) => (debug[key] = true, debug), {})
+
+var b = debug.bright
 
 
 var header = (name) =>
-  /req/.test(name) ? c.cyan.inverse(name) :
-  /res/.test(name) ? c.yellow.inverse(name) :
-  /json|body|form/.test(name) ? c.gray.inverse(name) :
+  /req/.test(name) ? (b?c.brightCyan:c.cyan).inverse(name) :
+  /res/.test(name) ? (b?c.brightYellow:c.yellow).inverse(name) :
+  /json|body|form/.test(name) ? (b?c.white:c.gray).inverse(name) :
   null
 
 
 var method = (verb) =>
-  /GET/.test(verb) ? c.green(verb) :
-  /POST|PUT/.test(verb) ? c.cyan(verb) :
-  /DELETE/.test(verb) ? c.red(verb) :
-  /HEAD|OPTIONS|CONNECT/.test(verb) ? c.yellow(verb) :
-  /TRACE/.test(verb) ? c.gray(verb) :
+  /GET/.test(verb) ? (b?c.brightGreen:c.green)(verb) :
+  /POST|PUT/.test(verb) ? (b?c.brightBlue:c.cyan)(verb) :
+  /DELETE/.test(verb) ? (b?c.brightRed:c.red)(verb) :
+  /HEAD|OPTIONS|CONNECT/.test(verb) ? (b?c.brightYellow:c.yellow)(verb) :
+  /TRACE/.test(verb) ? (b?c.white:c.gray)(verb) :
   null
 
 
 var status = (code, message) =>
-  /^1/.test(code) ? c.white(`${code} ${message}`) :
-  /^2/.test(code) ? c.green(`${code} ${message}`) :
-  /^3/.test(code) ? c.yellow(`${code} ${message}`) :
-  /^4/.test(code) ? c.red(`${code} ${message}`) :
-  /^5/.test(code) ? c.red.bold(`${code} ${message}`) :
+  /^1/.test(code) ? (b?c.brightWhite:c.white)(`${code} ${message}`) :
+  /^2/.test(code) ? (b?c.brightGreen:c.green)(`${code} ${message}`) :
+  /^3/.test(code) ? (b?c.brightYellow:c.yellow)(`${code} ${message}`) :
+  /^4/.test(code) ? (b?c.brightRed:c.red)(`${code} ${message}`) :
+  /^5/.test(code) ? (b?c.brightRed:c.red).bold(`${code} ${message}`) :
   null
 
 
-var url = ({protocol, hostname, port, path}) => c.yellow([
+var url = ({protocol, hostname, port, path}) => (b?c.brightCyan:c.yellow)([
   `${protocol}//`,
   hostname,
   port ? `:${port}` : '',
@@ -45,7 +49,11 @@ var url = ({protocol, hostname, port, path}) => c.yellow([
 var prettyjson = (json) =>
   j.render(
     json,
-    debug.nocolor ? {noColor: true} : {keysColor: 'blue', stringColor: 'grey'},
+    debug.nocolor ? {noColor: true} :
+    debug.bright
+      ? {keysColor: 'brightYellow', stringColor: 'brightGreen',
+          numberColor: 'brightBlue', dashColor: 'brightWhite'}
+      : {keysColor: 'blue', stringColor: 'grey'},
     4
   )
 
