@@ -46,7 +46,7 @@ var url = ({protocol, hostname, port, path}) => (b?c.brightCyan:c.yellow)([
 ].join(''))
 
 
-var prettyjson = (json) =>
+var content = (json) =>
   j.render(
     json,
     debug.nocolor ? {noColor: true} :
@@ -66,7 +66,7 @@ var request = ({req, body, options}) => {
     url(options),
   )
   // headers
-  console.log(prettyjson(
+  console.log(content(
     Object.keys(req._headerNames).reduce((headers, key) => (
       headers[req._headerNames[key]] = req._headers[key],
       headers
@@ -83,11 +83,11 @@ var request = ({req, body, options}) => {
       .find((name) => name.toLowerCase() === 'content-type')
     if (/application\/json/.test(options.headers[name])) {
       console.log(header('json'))
-      console.log(prettyjson(JSON.parse(body)))
+      console.log(content(JSON.parse(body)))
     }
     else if (/application\/x-www-form-urlencoded/.test(options.headers[header])) {
       console.log(header('form'))
-      console.log(prettyjson(qs.parse(body)))
+      console.log(content(qs.parse(body)))
     }
   }
 }
@@ -102,7 +102,7 @@ var response = ({res, body, json}) => {
     )
     // headers
     console.log(
-      prettyjson(res.headers)
+      content(res.headers)
     )
   }
   // body
@@ -113,7 +113,7 @@ var response = ({res, body, json}) => {
   // json
   if (json) {
     console.log(header('json'))
-    console.log(prettyjson(json))
+    console.log(content(json))
   }
 }
 
