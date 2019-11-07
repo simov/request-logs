@@ -53,9 +53,5 @@ json
 
 Disable all colors
 
-## bright
-
-Bright color scheme
-
 
   [request-compose]: https://github.com/simov/request-compose
