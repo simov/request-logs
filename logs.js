@@ -83,7 +83,7 @@ var request = ({req, body, options}) => {
       console.log(header('json'))
       console.log(content(JSON.parse(body)))
     }
-    else if (/application\/x-www-form-urlencoded/.test(options.headers[header])) {
+    else if (/application\/x-www-form-urlencoded/.test(options.headers[name])) {
       console.log(header('form'))
       console.log(content(qs.parse(body)))
     }
