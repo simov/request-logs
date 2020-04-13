@@ -20,26 +20,17 @@
     "colors": "^1.4.0",
     "prettyjson": "^1.2.1"
   },
-  "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-preset-env": "^1.6.1"
-  },
+  "devDependencies": {},
   "bin": {},
-  "main": "./build/index.js",
+  "main": "./logs.js",
   "files": [
-    "build/",
-    "index.js",
     "logs.js",
     "LICENSE",
     "README.md",
     "package.json"
   ],
-  "scripts": {
-    "build:main": "babel *.js --out-dir build",
-    "build": "rm -rf build/ && mkdir -p build && npm run build:main",
-    "prepublish": "npm run build"
-  },
+  "scripts": {},
   "engines": {
-    "node": ">=4.0.0"
+    "node": ">=8.0.0"
   }
 }
