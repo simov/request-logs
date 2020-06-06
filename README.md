@@ -49,6 +49,11 @@ json
     hey: hi
 ```
 
+## sync
+
+Synchronize request/response logs
+
+
 ## nocolor
 
 Disable all colors

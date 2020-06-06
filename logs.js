@@ -1,144 +1,43 @@
 
-var qs = require('querystring')
-var c = require('colors/safe')
-var j = require('prettyjson')
-
-
-var keys = ['req', 'res', 'body', 'json', 'nocolor']
+var keys = ['req', 'res', 'body', 'json', 'nocolor', 'sync']
 
 var debug = process.env.DEBUG.split(',')
+  .filter(Boolean)
+  .map((key) => key.trim())
   .filter((key) => keys.includes(key))
   .reduce((debug, key) => (debug[key] = true, debug), {})
 
-
-var header = (name) =>
-  /req/.test(name) ? c.cyan.inverse(name) :
-  /res/.test(name) ? c.yellow.inverse(name) :
-  /json|body|form/.test(name) ? c.white.inverse(name) :
-  null
-
-
-var method = (verb) =>
-  /GET/.test(verb) ? c.green(verb) :
-  /POST|PUT/.test(verb) ? c.cyan(verb) :
-  /DELETE/.test(verb) ? c.red(verb) :
-  /HEAD|OPTIONS|CONNECT/.test(verb) ? c.yellow(verb) :
-  /TRACE/.test(verb) ? c.gray(verb) :
-  null
-
-
-var status = (code, message) =>
-  /^1/.test(code) ? c.white(`${code} ${message}`) :
-  /^2/.test(code) ? c.green(`${code} ${message}`) :
-  /^3/.test(code) ? c.yellow(`${code} ${message}`) :
-  /^4/.test(code) ? c.red(`${code} ${message}`) :
-  /^5/.test(code) ? c.red.bold(`${code} ${message}`) :
-  null
-
-
-var url = ({protocol, hostname, port, path}) => c.white.inverse([
-  `${protocol}//`,
-  hostname,
-  port ? `:${port}` : '',
-  path || '/',
-].join(''))
-
-
-var content = (json) =>
-  j.render(
-    json,
-    debug.nocolor ? {noColor: true} :
-    {
-      keysColor: 'brightBlue', stringColor: 'white', numberColor: 'cyan',
-      dashColor: 'white', inlineArrays: true
-    },
-    4
-  )
-
-
-var request = ({req, body, options}) => {
-  // req method url
-  console.log(
-    header('req'),
-    method(options.method),
-    url(options),
-  )
-  // headers
-  console.log(content(
-    Object.keys(req._headerNames).reduce((headers, key) => (
-      headers[req._headerNames[key]] = req._headers[key],
-      headers
-    ), {})
-  ))
-  // body
-  if (debug.body && body) {
-    console.log(header('body'))
-    console.log(body)
-  }
-  // json or querystring
-  if (debug.json && body) {
-    var name = Object.keys(options.headers)
-      .find((name) => name.toLowerCase() === 'content-type')
-    if (/application\/json/.test(options.headers[name])) {
-      console.log(header('json'))
-      console.log(content(JSON.parse(body)))
-    }
-    else if (/application\/x-www-form-urlencoded/.test(options.headers[name])) {
-      console.log(header('form'))
-      console.log(content(qs.parse(body)))
-    }
-  }
+var handler = require('./lib/handler')
+if (typeof handler === 'function') {
+  var {request, response} = handler(debug)
 }
 
-
-var response = ({res, body, json}) => {
-  if (res) {
-    // res status message
-    console.log(
-      header('res'),
-      status(res.statusCode, res.statusMessage)
-    )
-    // headers
-    console.log(
-      content(res.headers)
-    )
-  }
-  // body
-  if (body) {
-    console.log(header('body'))
-    console.log(body)
-  }
-  // json or querystring
-  if (json) {
-    console.log(header('json'))
-    console.log(content(json))
-  }
-}
+var sync = {}
 
 
-module.exports = ({req, res, options, body, json}) => {
+module.exports = (args) => {
 
   if (!Object.keys(debug).length) {
     return
   }
-  if (debug.nocolor) {
-    c.enabled = false
-  }
 
-  if (debug.req && req) {
-    request({req, body, options})
-  }
-
-  if (debug.res && res) {
-    response({res})
-  }
-
-  else if (debug.res && !res && !req) {
-    if (debug.body && body) {
-      response({body})
+  if (debug.sync) {
+    if (args.send && args.send.req) {
+      var id = args.send.req.id
+      sync[id] = args.send
     }
-    if (debug.json && json) {
-      response({json})
+    else if (args.status) {
+      var id = args.status.res.id
+      request.send(sync[id])
+      response.status(args.status)
+      delete sync[id]
+    }
+  }
+  else {
+    if (!args.status) {
+      var mw = Object.keys(args)[0]
+      request[mw] && request[mw](args[mw])
+      response[mw] && response[mw](args[mw])
     }
   }
 

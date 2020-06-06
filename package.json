@@ -23,7 +23,9 @@
   "devDependencies": {},
   "bin": {},
   "main": "./logs.js",
+  "type": "commonjs",
   "files": [
+    "lib/",
     "logs.js",
     "LICENSE",
     "README.md",
