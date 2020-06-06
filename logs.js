@@ -1,7 +1,7 @@
 
 var keys = ['req', 'res', 'body', 'json', 'nocolor', 'sync']
 
-var debug = process.env.DEBUG.split(',')
+var debug = (process.env.DEBUG || '').split(',')
   .filter(Boolean)
   .map((key) => key.trim())
   .filter((key) => keys.includes(key))
